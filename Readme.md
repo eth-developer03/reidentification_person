@@ -38,17 +38,13 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR-USERNAME/player-reidentification.git
-cd player-reidentification
+git clone https://github.com/eth-developer03/reidentification_person
+
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Download model file
-# Place best.pt in the models/ directory
-
-# Run tracking
-python player_reidentification.py
+python reidentify.py
 ```
 
 ## 🧠 How It Works
@@ -254,8 +250,8 @@ pip install player-reidentification
 ### Method 2: From Source
 ```bash
 # Clone repository
-git clone https://github.com/YOUR-USERNAME/player-reidentification.git
-cd player-reidentification
+git clone https://github.com/eth-developer03/reidentification_person
+
 
 # Create virtual environment (recommended)
 python -m venv venv
@@ -272,7 +268,8 @@ pip install -e .
 ```python
 # Run in Colab cell
 !pip install ultralytics deep_sort_realtime imageio[ffmpeg]
-!git clone https://github.com/YOUR-USERNAME/player-reidentification.git
+!git clone https://github.com/eth-developer03/reidentification_person
+
 ```
 
 ### Download Required Model
@@ -282,9 +279,10 @@ wget https://drive.google.com/uc?id=1-5tOSHOSB9UXyP_enQoZNAMScrePVcMD -O models/
 
 # Or download manually from:
 # https://drive.google.com/file/d/1-5tOSHOSB9UXyP_enQoZNAMScrePVcMD/view
+
 ```
 
-## 📁 Project Structure
+<!-- ## 📁 Project Structure
 
 ```
 player-reidentification/
@@ -311,7 +309,7 @@ player-reidentification/
 └── 📁 docs/
     ├── technical_details.md        # Technical documentation
     └── troubleshooting.md          # Common issues
-```
+``` -->
 
 ## ⚙️ Configuration Options
 
@@ -401,62 +399,8 @@ tracker = CompleteVideoTracker(
 )
 ```
 
-## 🐛 Troubleshooting
 
-### Common Issues
 
-#### 1. "Video Won't Play in Colab"
-```python
-# Solution: Convert to compatible format
-!ffmpeg -i output.mp4 -c:v libx264 -preset fast output_compatible.mp4
-```
-
-#### 2. "Model Loading Error"
-```bash
-# Verify model file
-python -c "from ultralytics import YOLO; YOLO('models/best.pt')"
-
-# Re-download if corrupted
-rm models/best.pt
-wget [model-download-link] -O models/best.pt
-```
-
-#### 3. "Out of Memory Error"
-```python
-# Reduce batch size or use CPU
-tracker = CompleteVideoTracker(
-    model_path="models/best.pt",
-    video_path="input.mp4",
-    device='cpu'  # Force CPU usage
-)
-```
-
-#### 4. "Partial Video Download Issue"
-✅ **This is fixed in our implementation!** Our two-phase processing ensures complete videos only.
-
-### Performance Optimization
-
-#### GPU Acceleration
-```python
-# Verify GPU availability
-import torch
-print(f"CUDA available: {torch.cuda.is_available()}")
-print(f"GPU: {torch.cuda.get_device_name(0)}")
-
-# Enable mixed precision for faster processing
-tracker.model.to('cuda')
-torch.backends.cudnn.benchmark = True
-```
-
-#### Memory Management
-```python
-# For large videos, enable frame skipping
-tracker = CompleteVideoTracker(
-    model_path="models/best.pt",
-    video_path="large_video.mp4",
-    frame_skip=2  # Process every 2nd frame
-)
-```
 
 ## 📈 Use Cases & Applications
 
@@ -477,156 +421,3 @@ tracker = CompleteVideoTracker(
 - **Sports Science**: Movement pattern analysis
 - **AI Training Data**: Generate labeled tracking datasets
 - **Academic Studies**: Basis for research papers
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Quick Start for Contributors
-```bash
-# Fork the repository and clone your fork
-git clone https://github.com/YOUR-USERNAME/player-reidentification.git
-
-# Create development environment
-python -m venv dev-env
-source dev-env/bin/activate
-pip install -r requirements-dev.txt
-
-# Install pre-commit hooks
-pre-commit install
-
-# Create feature branch
-git checkout -b feature/your-feature-name
-
-# Make changes and test
-python -m pytest tests/
-black player_reidentification.py
-flake8 player_reidentification.py
-
-# Submit pull request
-```
-
-### Areas for Contribution
-- 🔧 **Performance optimization** - GPU utilization improvements
-- 🎯 **Accuracy improvements** - Better detection/tracking algorithms  
-- 📱 **Mobile deployment** - iOS/Android apps
-- 🌐 **Web interface** - Browser-based demo
-- 📚 **Documentation** - Tutorials and guides
-- 🧪 **Testing** - Unit and integration tests
-
-## 📊 Benchmarks & Comparisons
-
-### Comparison with Other Systems
-
-| System | ID Consistency | Re-ID Success | Processing Speed | Ease of Use |
-|--------|---------------|---------------|------------------|-------------|
-| **Our System** | **95%** | **85%** | **2-4x real-time** | **★★★★★** |
-| OpenCV Trackers | 70% | 40% | 5x real-time | ★★★☆☆ |
-| ByteTrack | 88% | 60% | 3x real-time | ★★★☆☆ |
-| FairMOT | 82% | 55% | 1x real-time | ★★☆☆☆ |
-
-### Performance by Video Type
-
-| Video Type | Accuracy | Speed | Notes |
-|------------|----------|-------|-------|
-| **Football Match** | 95% | 2.5x | Optimal performance |
-| **Basketball** | 90% | 2.8x | Fast movement challenges |
-| **Soccer Training** | 97% | 3.1x | Fewer occlusions |
-| **Crowded Stadium** | 85% | 2.0x | Many overlapping players |
-
-## 🔮 Roadmap & Future Development
-
-### Version 2.0 (Q2 2024)
-- [ ] **Real-time streaming support** for live broadcasts
-- [ ] **Multi-camera fusion** for stadium-wide tracking
-- [ ] **Player pose estimation** integration
-- [ ] **Web-based interface** for easy deployment
-
-### Version 3.0 (Q4 2024)  
-- [ ] **Jersey number recognition** for player identification
-- [ ] **Team classification** based on uniform colors
-- [ ] **Action recognition** (running, kicking, jumping)
-- [ ] **3D trajectory estimation** with depth
-
-### Long-term Vision
-- [ ] **Edge deployment** for real-time stadium installations
-- [ ] **Mobile apps** for coaches and analysts
-- [ ] **Cloud API service** for scalable processing
-- [ ] **Integration with major sports platforms**
-
-## 📚 Research & References
-
-### Academic Foundation
-This system builds upon cutting-edge research in computer vision and sports analytics:
-
-- **YOLO**: Real-Time Object Detection ([paper](https://arxiv.org/abs/2305.08909))
-- **DeepSORT**: Simple Online and Realtime Tracking ([paper](https://arxiv.org/abs/1703.07402))
-- **Multi-Object Tracking**: A survey ([paper](https://arxiv.org/abs/1909.12605))
-
-### Citations
-If you use this system in your research, please cite:
-```bibtex
-@software{player_reidentification_2024,
-  title={Player Re-Identification System using YOLOv11 + DeepSORT},
-  author={Your Name},
-  year={2024},
-  url={https://github.com/YOUR-USERNAME/player-reidentification}
-}
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-### Third-party Licenses
-- **YOLOv11**: AGPL-3.0 License
-- **DeepSORT**: GPL-3.0 License  
-- **OpenCV**: Apache 2.0 License
-
-## 🙏 Acknowledgments
-
-Special thanks to:
-- **Ultralytics team** for the excellent YOLOv11 implementation
-- **DeepSORT authors** for the robust tracking algorithm
-- **OpenCV community** for computer vision tools
-- **Sports video providers** for test footage
-- **Open source community** for inspiration and feedback
-
-## 📞 Support & Contact
-
-### Get Help
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/YOUR-USERNAME/player-reidentification/issues)
-- 💬 **Questions**: [GitHub Discussions](https://github.com/YOUR-USERNAME/player-reidentification/discussions)
-- 📧 **Email**: your.email@domain.com
-- 🐦 **Twitter**: [@your_twitter](https://twitter.com/your_twitter)
-
-### Commercial Support
-For commercial applications and custom development:
-- 🏢 **Enterprise Support**: enterprise@your-domain.com
-- 🤝 **Consulting Services**: Available for custom implementations
-- 📊 **Training & Workshops**: Team training on computer vision
-
-## 🌟 Star History & Community
-
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR-USERNAME/player-reidentification&type=Date)](https://star-history.com/#YOUR-USERNAME/player-reidentification&Date)
-
-### Contributors
-Thanks to all our contributors! 🎉
-
-[![Contributors](https://contrib.rocks/image?repo=YOUR-USERNAME/player-reidentification)](https://github.com/YOUR-USERNAME/player-reidentification/graphs/contributors)
-
----
-
-<div align="center">
-
-**🚀 Try it now in Google Colab!**
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR-USERNAME/player-reidentification/blob/main/notebooks/Colab_Demo.ipynb)
-
-**Made with ❤️ for the computer vision and sports analytics community**
-
-*If this project helped you, please consider giving it a ⭐ on GitHub!*
-
-[⬆️ Back to Top](#player-re-identification-system-using-yolov11--deepsort)
-
-</div>
